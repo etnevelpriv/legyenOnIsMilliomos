@@ -8,9 +8,10 @@ namespace legyenOnIsMilliomos
 {
     internal class Kerdes
     {
-        public string Kerdes { get; set; }
+        public int Szint { get; set; }
+        public string KerdesSzoveg  { get; set; }
         public List<string> Valasz { get; set; }
-        public char HelyesValasz { get; set; }
+        public string HelyesValasz { get; set; }
         public string Kategoria { get; set; }
 
         public Kerdes()
@@ -18,9 +19,10 @@ namespace legyenOnIsMilliomos
             Valasz = new List<string>();
         }
 
-        public Kerdes(string kerdes, List<string> valasz, char helyesValasz, string kategoria)
+        public Kerdes(int szint, string kerdes, List<string> valasz, string helyesValasz, string kategoria)
         {
-            Kerdes = kerdes;
+            Szint = szint;
+            KerdesSzoveg = kerdes;
             Valasz = valasz;
             HelyesValasz = helyesValasz;
             Kategoria = kategoria;
