@@ -8,6 +8,10 @@ namespace legyenOnIsMilliomos
 {
     internal class Jatek
     {
+        bool kozonseg = true;
+        bool telefon = true;
+        bool felezes = true;
+
         public void Indit()
         {
             var sorkerdesek = new Sorkerdesek();
@@ -70,10 +74,10 @@ namespace legyenOnIsMilliomos
             {
                 var kerdesek = new Kerdesek();
                 int[] nyeremenyek = {
-                        10000, 50000, 100000, 250000, 500000,
-                        1000000, 2500000, 5000000, 10000000, 15000000,
-                        20000000, 25000000, 30000000, 40000000, 50000000
-                    };
+                            10000, 50000, 100000, 250000, 500000,
+                            1000000, 2500000, 5000000, 10000000, 15000000,
+                            20000000, 25000000, 30000000, 40000000, 50000000
+                        };
                 int szint = 1;
                 int nyertOsszeg = 0;
 
@@ -108,8 +112,15 @@ namespace legyenOnIsMilliomos
                     }
 
                     Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write("Válasz (Pl: A): ");
+                    Console.Write("Válasz (Segítség: -h): ");
                     string valasz = Console.ReadLine()?.Trim().ToUpper() ?? "";
+
+                    while (valasz == "-H")
+                    {
+                        Segitseg(kerdes, betuk, random);
+                        Console.Write("Válasz (Pl: A, vagy -h a segítséghez): ");
+                        valasz = Console.ReadLine()?.Trim().ToUpper() ?? "";
+                    }
 
                     if (valasz == kerdes.HelyesValasz.ToUpper())
                     {
@@ -171,6 +182,103 @@ namespace legyenOnIsMilliomos
                         }
                         break;
                     }
+                }
+            }
+        }
+
+        void Segitseg(Kerdes kerdes, char[] betuk, Random random)
+        {
+            bool kilepes = false;
+            while (!kilepes)
+            {
+                Console.WriteLine("\nSegítség menü:\n");
+                if (kozonseg)
+                {
+                    Console.WriteLine("Közönség segítsége (-k)");
+                }
+                if (telefon)
+                {
+                    Console.WriteLine("Telefonos segítség (-t)");
+                }
+                if (felezes)
+                {
+                    Console.WriteLine("Válasz felezés (-v)");
+                }
+                Console.WriteLine("Kilépés (-e)");
+
+                Console.Write("\nVálassz egy lehetőséget: ");
+                string valasztas = Console.ReadLine()?.Trim().ToLower() ?? "";
+
+                if (valasztas == "-k" && kozonseg)
+                {
+                    int esely = random.Next(100);
+                    if (esely < 70)
+                    {
+                        Console.WriteLine("A közönség szerint a helyes válasz: " + kerdes.HelyesValasz);
+                    }
+                    else
+                    {
+                        List<string> rossz = new List<string>();
+                        foreach (var b in betuk)
+                        {
+                            if (b.ToString() != kerdes.HelyesValasz.ToUpper())
+                                rossz.Add(b.ToString());
+                        }
+                        Console.WriteLine("A közönség szerint a helyes válasz: " + rossz[random.Next(rossz.Count)]);
+                    }
+                    kozonseg = false;
+                }
+                else if (valasztas == "-t" && telefon)
+                {
+                    int esely = random.Next(100);
+                    if (esely < 50)
+                    {
+                        Console.WriteLine("A telefonos ismerős szerint a helyes válasz: " + kerdes.HelyesValasz);
+                    }
+                    else
+                    {
+                        List<string> rossz = new List<string>();
+                        foreach (var b in betuk)
+                        {
+                            if (b.ToString() != kerdes.HelyesValasz.ToUpper())
+                                rossz.Add(b.ToString());
+                        }
+                        Console.WriteLine("A telefonos ismerős szerint a helyes válasz: " + rossz[random.Next(rossz.Count)]);
+                    }
+
+                    telefon = false;
+                }
+
+                else if (valasztas == "-v" && felezes)
+                {
+                    List<string> rossz = new List<string>();
+                    foreach (var b in betuk)
+                    {
+                        if (b.ToString() != kerdes.HelyesValasz.ToUpper())
+                            rossz.Add(b.ToString());
+                    }
+
+                    int sorrend = random.Next(2);
+
+                    if (sorrend == 0)
+                    {
+                        Console.WriteLine("A két lehetséges válasz: " + kerdes.HelyesValasz + " és " + rossz[random.Next(rossz.Count)]);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("A két lehetséges válasz: " + rossz[random.Next(rossz.Count)] + " és " + kerdes.HelyesValasz);
+                    }
+
+                    felezes = false;
+                }
+                else if (valasztas == "-e")
+                {
+                    kilepes = true;
+                }
+                else
+                {
+                    Console.WriteLine("Nincs ilyen lehetőség, vagy már felhasználtad.");
                 }
             }
         }
